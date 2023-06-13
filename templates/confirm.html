@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title%}
+Booking Confirmation 
+{% endblock%}
+
+{% block content %}
+
+<div class="container text-center">
+  <h1>Booking Confirmation </h1>
+
+  <div class="alert-info" role="alert">
+    we have recieved Your Appointment request , Our representitive call you shortly 
+  </div>
+
+</div>
+
+{% endblock%}
+
+
+
+class Middleware:
+    def __init__(self, app):
+        self.app = app
+    
+    def __call__(self, environ, start_response):
+        # Do some processing before passing the request to the application
+        # For example, you can perform authentication or logging here
+        
+        # Pass the request to the application
+        response = self.app(environ, start_response)
+        
+        # Do some processing after receiving the response from the application
+        # For example, you can modify the response or perform error handling here
+        
+        return response
+
+def application(environ, start_response):
+    status = '200 OK'
+    response_headers = [('Content-type', 'text/plain')]
+    start_response(status, response_headers)
+    
+    return [b"Hello, world!"]
+
+# Create an instance of the middleware and pass the application as an argument
+middleware = Middleware(application)
+
+# Run the middleware as a WSGI server
+from wsgiref.simple_server import make_server
+
+httpd = make_server('', 8000, middleware)
+print("Serving on port 8000...")
+
+# Start the server
+httpd.serve_forever()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
